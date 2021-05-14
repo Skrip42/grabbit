@@ -1,7 +1,7 @@
 #!/bin/bash
 for (( i = 0; i < 20; i++ ))
 do
-    curl --location --request POST 'localhost:88?quque=grabbitTestQueue' \
+    curl --location --request POST 'localhost:88?quque=grabbitTestQueue&callback=http://localhost:88/test' \
     --header 'Content-Type: application/json' \
     --data-raw '{
         "url":"http://ponbase.local/api/aggregation_switch?api_key=ponBaseReadApiKey&cluster.id=5",
