@@ -45,6 +45,7 @@ func main() {
             panic(err)
         }
         c.String(http.StatusOK, string(data))
+        log.Printf("%v\n", string(data))
     })
     router.Run(":" + strconv.Itoa(config.Port))
 }
