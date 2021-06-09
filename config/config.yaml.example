@@ -1,0 +1,2 @@
+port: 88
+rabbit: "amqp://grabbit_local:123@10.1.19.242:5672/"

@@ -1,9 +1,14 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
+	"github.com/skrip42/grabbitLayer/internal/config"
 	"github.com/skrip42/grabbitLayer/internal/executor"
 	"github.com/skrip42/grabbitLayer/internal/message"
 	"github.com/skrip42/grabbitLayer/internal/request"
@@ -11,6 +16,18 @@ import (
 
 
 func main() {
+    rl, err := rotatelogs.New(
+        "./logs/%Y-%m-%d.log",
+        rotatelogs.WithRotationTime(24 * time.Hour),
+        rotatelogs.WithMaxAge(-1),
+        rotatelogs.WithRotationCount(30),
+    )
+    config := config.GetConfig()
+    if err != nil {
+        panic(err)
+    }
+    log.SetOutput(rl)
+    gin.DefaultWriter = rl
     router := gin.Default()
     ex := executor.New()
     router.POST("/", func(c *gin.Context) {
@@ -29,6 +46,5 @@ func main() {
         }
         c.String(http.StatusOK, string(data))
     })
-
-    router.Run(":88")
+    router.Run(":" + strconv.Itoa(config.Port))
 }

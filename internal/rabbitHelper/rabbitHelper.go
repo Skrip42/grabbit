@@ -1,6 +1,9 @@
 package rabbitHelper
 
-import "github.com/streadway/amqp"
+import (
+	"github.com/skrip42/grabbitLayer/internal/config"
+	"github.com/streadway/amqp"
+)
 
 var isConnected = false
 var connection *amqp.Connection
@@ -10,9 +13,9 @@ var channel *amqp.Channel
 //singleton connection
 func getConnection() (*amqp.Connection, error) {
     if !isConnected {
-        c, err := amqp.Dial("amqp://grabbit_local:123@10.1.19.242:5672/")
+        config := config.GetConfig()
+        c, err := amqp.Dial(config.RabbitDSN)
         if err != nil {
-            // panic(err)
             return nil, err
         }
         connection = c
@@ -25,12 +28,10 @@ func getChannel() (*amqp.Channel, error) {
     if !isChannel {
         cn, err := getConnection()
         if err != nil {
-            // panic(err)
             return nil, err
         }
         ch, err := cn.Channel()
         if err != nil {
-            // panic(err)
             return nil, err
         }
         channel = ch
@@ -44,10 +45,8 @@ func GetExchange(name string) (*Exchange, error) {
     ex.Name = name
     ex.Channel, err = getChannel()
     if err != nil {
-            // panic(err)
         return nil, err
     }
-    // ex.Channel = channel
     err = ex.Channel.ExchangeDeclare(
         name,
         "fanout",
@@ -58,7 +57,6 @@ func GetExchange(name string) (*Exchange, error) {
         nil,
     )
     if err != nil {
-            // panic(err)
         return nil, err
     }
     q, err := ex.Channel.QueueDeclare(
@@ -70,7 +68,6 @@ func GetExchange(name string) (*Exchange, error) {
         nil,
     )
     if err != nil {
-            // panic(err)
         return nil, err
     }
     err = ex.Channel.QueueBind(
@@ -81,7 +78,6 @@ func GetExchange(name string) (*Exchange, error) {
         nil,
     )
     if err != nil {
-            // panic(err)
         return nil, err
     }
     msgs, err := ex.Channel.Consume(
@@ -94,7 +90,6 @@ func GetExchange(name string) (*Exchange, error) {
         nil,
     )
     if err != nil {
-            // panic(err)
         return nil, err
     }
     ex.Consume = msgs

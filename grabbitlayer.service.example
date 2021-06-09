@@ -1,0 +1,22 @@
+[Unit]
+Description=Grabbitlayer daemon
+ConditionPathExists=/path/to/project/directory
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+WorkingDirectory=/path/to/project/directory
+ExecStart=/path/to/project/binary/file
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=grabbitlayer
+
+[Install]
+WantedBy=multi-user.target
