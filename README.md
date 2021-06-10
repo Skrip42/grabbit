@@ -18,9 +18,12 @@
 git clone https://github.com/Skrip42/grabbitLayer.git
 ```
 
-- сбидите проект
+- соберите проект
 
-```shell go build cmd/grabbitlayer/main.go```
+```shell 
+go build cmd/grabbitlayer/main.go
+```
+
 - откопируйте и отредактируйте config/config.yaml.example в config/config.yaml
 - откопируйте и отредактируйте grabbitlayer grabbitlayer.service.example в /etc/systemd/system/grabbitlayer.service
 - включите сервис и настройте автозапуск:
