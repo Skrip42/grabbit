@@ -51,7 +51,7 @@ sudo systemctl start grabbitlayer
 {
     "url":"target.url",
     "method":"TARGET_METHOD",
-    "headers":"Target:Headers"
+    "headers":"Target:Headers",
     "body":"target body"
 }
 ```
